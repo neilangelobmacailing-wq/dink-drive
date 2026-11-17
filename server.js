@@ -438,7 +438,10 @@ async function processPendingReports() {
   try {
     let files = [];
     try {
-      files = fs.readdirSync(PENDING_DIR).filter((f) => f.endsWith(".json")).sort();
+      files = fs
+        .readdirSync(PENDING_DIR)
+        .filter((f) => f.endsWith(".json"))
+        .sort();
     } catch (err) {
       /* nothing pending */
     }
@@ -466,7 +469,10 @@ async function processPendingReports() {
     }
     if (historyDirty) {
       try {
-        const wb = await reports.buildHistoryWorkbook(readHistory(), reportCfg());
+        const wb = await reports.buildHistoryWorkbook(
+          readHistory(),
+          reportCfg(),
+        );
         await writeWorkbook(wb, HISTORY_XLSX);
         historyDirty = false;
       } catch (err) {
@@ -537,6 +543,7 @@ function requireAuth(req, res, next) {
 // App & routes
 // ---------------------------------------------------------------------------
 const app = express();
+app.set("trust proxy", 1);
 app.disable("x-powered-by");
 const jsonSmall = express.json({ limit: "100kb" });
 const jsonLogo = express.json({ limit: "3mb" });
